@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">HouseMart</string>
+    <string name="searchHint">Enter search value</string>
+    <string name="doBasicSearchText">Basic search start</string>
+</resources>
