@@ -19,6 +19,10 @@ import okhttp3.Response;
 import com.emxample.fragments.BasicSearch_Fragment;
 import com.excample.configs.ConfigConstants;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -70,10 +74,28 @@ public class MainActivity extends AppCompatActivity {
         try {
             Response respone = client.newCall(request).execute();
             result = respone.body().string();
-            System.out.println("RESULT BODY" + result);
+            //System.out.println("RESULT BODY" + result);
+
+            //Parse JSON and try to print data
+            //JSONObject jsonObject = new JSONObject(result);
+            JSONArray jsonArray =  new JSONArray(result);
+            if(jsonArray != null) {
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject temp = jsonArray.getJSONObject(i);
+                    System.out.println("DAY LA KET QUA \n");
+                    System.out.println(temp.getString("ownerName"));
+                }
+            }
+            else
+                System.out.println("JSON Array Null");
         }
         catch(IOException e) {
             e.printStackTrace();
+        }
+        catch (JSONException e1) {
+            System.out.println("Loi roi");
+            System.out.println(e1.getStackTrace());
+
         }
         return result;
     }
