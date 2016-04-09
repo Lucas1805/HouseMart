@@ -1,6 +1,5 @@
 package com.example.megurinelucas.housemart;
 
-import android.app.Activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -8,15 +7,16 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
+
+import example.utils.HttpUtil;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-import com.emxample.fragments.BasicSearch_Fragment;
+import com.example.advertisements.Advertisement;
 import com.excample.configs.ConfigConstants;
 
 import org.json.JSONArray;
@@ -24,10 +24,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.io.InputStream;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity {
     //EditText basicSearchValue = (EditText) findViewById(R.id.txt_BasicSearchValue);
+    final String getAllURL = "http://" + ConfigConstants.ipAddress
+            + ":" + ConfigConstants.port + "/api/android";
+    List<Advertisement> advertisementList = new LinkedList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,17 +42,36 @@ public class MainActivity extends AppCompatActivity {
         ImageButton btn_BasicSearch = (ImageButton) findViewById(R.id.btn_BasicSearch);
         EditText txt_basicSearchValue = (EditText) findViewById(R.id.txt_BasicSearchValue);
 
+        //Load all advertisement on server to list
+        if(isConnected()) {
+            getAllAdvertisement();
+        }
+        else {
+            Toast.makeText(this, "No internet connection, " +
+                    "please check again", Toast.LENGTH_LONG).show();
+        }
 
+
+    }
+
+    public void getAllAdvertisement() {
+        HttpAsyncTask asyncTask = new HttpAsyncTask();
+        try {
+            String tmp = asyncTask.execute(getAllURL).get();
+            this. advertisementList = HttpUtil.makeAdvertisementList(tmp);
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
     }
 
 
     public void doBasicSearch(View v){
-        final String searchAllUrl = "http://" + ConfigConstants.ipAddress
-                + ":" + ConfigConstants.port + "/api/android";
-
         //Check if phone is connect to internet before search
         if(isConnected()) {
-            new HttpAsyncTask().execute(searchAllUrl);
+
         }
         else {
             Toast.makeText(this, "No internet connection, " +
@@ -66,45 +90,16 @@ public class MainActivity extends AppCompatActivity {
             return false;
     }
 
-    public String sendGetRequest(String url) {
-        OkHttpClient client = new OkHttpClient();
-        String result = "Empty";
-        Request request = new Request.Builder().url(url).build();
-
-        try {
-            Response respone = client.newCall(request).execute();
-            result = respone.body().string();
-            //System.out.println("RESULT BODY" + result);
-
-            //Parse JSON and try to print data
-            //JSONObject jsonObject = new JSONObject(result);
-            JSONArray jsonArray =  new JSONArray(result);
-            if(jsonArray != null) {
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject temp = jsonArray.getJSONObject(i);
-                    System.out.println("DAY LA KET QUA \n");
-                    System.out.println(temp.getString("ownerName"));
-                }
-            }
-            else
-                System.out.println("JSON Array Null");
-        }
-        catch(IOException e) {
-            e.printStackTrace();
-        }
-        catch (JSONException e1) {
-            System.out.println("Loi roi");
-            System.out.println(e1.getStackTrace());
-
-        }
-        return result;
-    }
-
+    /**
+     * This method use to run sendGetRequest method, because cannot sen get request in same thread
+     * with main class
+     */
     private class HttpAsyncTask extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... urls) {
-
-            return sendGetRequest(urls[0]);
+            return HttpUtil.sendGetRequest(urls[0]);
         }
     }
+
+
 }
