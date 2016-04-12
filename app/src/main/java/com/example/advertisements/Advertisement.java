@@ -1,49 +1,81 @@
 package com.example.advertisements;
 
-import java.sql.Date;
+import java.util.Date;
 
 /**
  * Created by Megurine Lucas on 05-04-2016.
  */
 public class Advertisement {
     private String id;
-    private String ownerName;
+    private String title;
     private String address;
-    private String district;
-    private String province;
+    private String districtID;
+    private String districtName;
+    private String provinceID;
+    private String provinceName;
     private String phone;
     private String description;
     private String area;
     private String price;
     private String type;
-    private String dateCreate;
-    private String dateUpdate;
+    private String latitude;
+    private String longtitude;
+    private String image1;
+    private String image2;
+    private String image3;
+    private Date dateCreate;
+    private Date dateUpdate;
     private String creator;
     private String updator;
 
-    public Advertisement(String address, String area, String creator, String dateCreate
-            , String dateUpdate, String description, String district, String id, String ownerName
-            , String phone, String price, String province, String type, String updator) {
+    public Advertisement(String address, String area, String creator, Date dateCreate
+            , Date dateUpdate, String description, String districtID, String districtName
+            , String id, String image1, String image2, String image3, String latitude
+            , String longtitude, String title, String phone, String price, String provinceID
+            , String provinceName, String type, String updator) {
         this.address = address;
         this.area = area;
         this.creator = creator;
         this.dateCreate = dateCreate;
         this.dateUpdate = dateUpdate;
         this.description = description;
-        this.district = district;
+        this.districtID = districtID;
+        this.districtName = districtName;
         this.id = id;
-        this.ownerName = ownerName;
+        this.image1 = image1;
+        this.image2 = image2;
+        this.image3 = image3;
+        this.latitude = latitude;
+        this.longtitude = longtitude;
+        this.title = title;
         this.phone = phone;
         this.price = price;
-        this.province = province;
+        this.provinceID = provinceID;
+        this.provinceName = provinceName;
         this.type = type;
         this.updator = updator;
     }
 
-    @Override
-    public String toString() {
-        return id + ownerName + address + district + province + phone + description + area + price
-                + type + dateCreate + dateUpdate + creator + updator;
+    /**
+     * Constructor with no latitude, longtitude, image1,2,3; creator, updator, phone
+     * This constructor use for load all advertisements when first start app
+     */
+    public Advertisement(String address, String area, Date dateCreate
+            , Date dateUpdate, String districtID, String districtName
+            , String id, String title, String price, String provinceID
+            , String provinceName, String type) {
+        this.address = address;
+        this.area = area;
+        this.dateCreate = dateCreate;
+        this.dateUpdate = dateUpdate;
+        this.districtID = districtID;
+        this.districtName = districtName;
+        this.id = id;
+        this.title = title;
+        this.price = price;
+        this.provinceID = provinceID;
+        this.provinceName = provinceName;
+        this.type = type;
     }
 
     public String getAddress() {
@@ -70,19 +102,19 @@ public class Advertisement {
         this.creator = creator;
     }
 
-    public String getDateCreate() {
+    public Date getDateCreate() {
         return dateCreate;
     }
 
-    public void setDateCreate(String dateCreate) {
+    public void setDateCreate(Date dateCreate) {
         this.dateCreate = dateCreate;
     }
 
-    public String getDateUpdate() {
+    public Date getDateUpdate() {
         return dateUpdate;
     }
 
-    public void setDateUpdate(String dateUpdate) {
+    public void setDateUpdate(Date dateUpdate) {
         this.dateUpdate = dateUpdate;
     }
 
@@ -94,12 +126,20 @@ public class Advertisement {
         this.description = description;
     }
 
-    public String getDistrict() {
-        return district;
+    public String getDistrictID() {
+        return districtID;
     }
 
-    public void setDistrict(String district) {
-        this.district = district;
+    public void setDistrictID(String districtID) {
+        this.districtID = districtID;
+    }
+
+    public String getDistrictName() {
+        return districtName;
+    }
+
+    public void setDistrictName(String districtName) {
+        this.districtName = districtName;
     }
 
     public String getId() {
@@ -110,12 +150,52 @@ public class Advertisement {
         this.id = id;
     }
 
-    public String getOwnerName() {
-        return ownerName;
+    public String getImage1() {
+        return image1;
     }
 
-    public void setOwnerName(String ownerName) {
-        this.ownerName = ownerName;
+    public void setImage1(String image1) {
+        this.image1 = image1;
+    }
+
+    public String getImage2() {
+        return image2;
+    }
+
+    public void setImage2(String image2) {
+        this.image2 = image2;
+    }
+
+    public String getImage3() {
+        return image3;
+    }
+
+    public void setImage3(String image3) {
+        this.image3 = image3;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getLongtitude() {
+        return longtitude;
+    }
+
+    public void setLongtitude(String longtitude) {
+        this.longtitude = longtitude;
+    }
+
+    public String getOwnerName() {
+        return title;
+    }
+
+    public void setOwnerName(String title) {
+        this.title = title;
     }
 
     public String getPhone() {
@@ -134,12 +214,20 @@ public class Advertisement {
         this.price = price;
     }
 
-    public String getProvince() {
-        return province;
+    public String getProvinceID() {
+        return provinceID;
     }
 
-    public void setProvince(String province) {
-        this.province = province;
+    public void setProvinceID(String provinceID) {
+        this.provinceID = provinceID;
+    }
+
+    public String getProvinceName() {
+        return provinceName;
+    }
+
+    public void setProvinceName(String provinceName) {
+        this.provinceName = provinceName;
     }
 
     public String getType() {

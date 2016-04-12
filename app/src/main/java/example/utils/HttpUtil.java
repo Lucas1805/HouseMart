@@ -9,12 +9,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.sql.Date;
-import java.sql.Timestamp;
+import java.util.Collections;
+import java.util.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.TimeZone;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -33,6 +34,7 @@ public class HttpUtil {
         try {
             Response respone = client.newCall(request).execute();
             result = respone.body().string();
+            System.out.println("RESPONSE BODY NE: " +result);
             JSONArray jsonArray =  new JSONArray(result);
         }
         catch(IOException e) {
@@ -51,34 +53,65 @@ public class HttpUtil {
             JSONArray jsonArray = JSONParser.parseJSON(jsonResult);
             if(jsonArray != null && jsonArray.length() > 0) {
                 for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject tmp = jsonArray.getJSONObject(i);
+                    try {
+                        JSONObject tmp = jsonArray.getJSONObject(i);
 
-                    //Create Advertisement object and add to list
-                    String id = tmp.getString("id");
-                    String ownerName = tmp.getString("ownerName");
-                    String address = tmp.getString("address");
-                    String district = tmp.getString("district");
-                    String province = tmp.getString("city");
-                    String phone = tmp.getString("phone");
-                    String description = tmp.getString("description");
-                    String area = tmp.getString("area");
-                    String price = tmp.getString("price");
-                    String type = tmp.getString("type");
-                    String dateCreate= tmp.getString("dateCreate");
-                    String dateUpdate= tmp.getString("dateUpdate");
-                    String creator= tmp.getString("creator");
-                    String updator= tmp.getString("updator");
+                        //Create Advertisement object and add to list
+                        String id = tmp.getString("postID");
+                        String title = tmp.getString("title");
+                        String address = tmp.getString("address");
+                        String districtID = tmp.getString("districtID");
+                        String districtName = tmp.getString("districtName");
+                        String provinceID = tmp.getString("provinceID");
+                        String provinceName = tmp.getString("provinceName");
+                        //String phone = tmp.getString("phone");
+                        //String description = tmp.getString("description");
+                        String area = tmp.getString("area");
+                        String price = tmp.getString("price");
+                        String type = tmp.getString("type");
+                        //String latitude = tmp.getString("latitude");
+                        //String longtitude = tmp.getString("longtitude");
+                        String image1 = tmp.getString("image1");
+                        String image2 = tmp.getString("image2");
+                        String image3 = tmp.getString("image3");
 
-                    Advertisement tmpAd = new Advertisement(address, area, creator, dateCreate
-                            , dateUpdate, description, district, id, ownerName
-                            , phone, price, province, type, updator);
+                        //Xu ly ngay Create
 
-                    list.add(tmpAd);
+                        SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                        Date dateObj = formater.parse(tmp.getString("dateCreate"));
+                        formater.setTimeZone(TimeZone.getTimeZone("UTC"));   // This line converts the given date into UTC time zone
+                        String aRevisedDate = new SimpleDateFormat("dd/MM/yyyy KK:mm:ss a").format(dateObj);
+
+                        Date dateCreate = new SimpleDateFormat("dd/MM/yyyy KK:mm:ss a").parse(aRevisedDate);
+                        //System.out.println(dateCreate.getDate()+dateCreate.getMonth()+dateCreate.getYear());
+                        //System.out.println(dateCreate.toString());
+
+                        //Xu ly Date Update
+                        dateObj = formater.parse(tmp.getString("dateUpdate"));
+                        formater.setTimeZone(TimeZone.getTimeZone("UTC"));   // This line converts the given date into UTC time zone
+                        aRevisedDate = new SimpleDateFormat("dd/MM/yyyy KK:mm:ss a").format(dateObj);
+                        Date dateUpdate = new SimpleDateFormat("dd/MM/yyyy KK:mm:ss a").parse(aRevisedDate);
+
+                        //Date dateUpdate = new SimpleDateFormat("dd/MM/yyyy KK:mm:ss a").parse(aRevisedDate);
+
+                        Advertisement tmpAd = new Advertisement(address, area, dateCreate
+                                , dateUpdate, districtID, districtName, id, title
+                                , price, provinceID, provinceName, type);
+
+                        list.add(tmpAd);
+                    }
+                    catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                 }// End of for
             }
         }
         catch (JSONException e) {
             e.printStackTrace();
+        }
+        //Sort newest advertise ment first before return
+        if(list != null) {
+            Collections.sort(list,new AdvertisementDateComparator());
         }
         return list;
     }

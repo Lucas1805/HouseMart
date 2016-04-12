@@ -6,10 +6,37 @@
     android:orientation="vertical"
     tools:context="com.example.megurinelucas.housemart.MainActivity">
 
-    <fragment
-        android:name="com.emxample.fragments.BasicSearch_Fragment"
-        android:id="@+id/basicSearch_Fragment"
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <fragment
+            android:name="com.emxample.fragments.BasicSearch_Fragment"
+            android:layout_weight="0"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/basicSearch_Fragment"
+            tools:layout="@layout/fragment_basicsearch" />
+
+        <fragment
+            android:name="com.emxample.fragments.AdvanceSearch_Fragment"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/advanceSearch_Fragment"
+            tools:layout="@layout/fragment_advancesearch" />
+
+        <ImageButton
+            android:id="@+id/btn_expandBasicSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_expand_more_black_24dp"
+            android:onClick="expandSearch"/>
+    </LinearLayout>
+
+
+
 
 </LinearLayout>

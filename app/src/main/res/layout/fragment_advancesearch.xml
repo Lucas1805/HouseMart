@@ -10,9 +10,10 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="City" />
+            android:text="City"
+            android:layout_gravity="center"/>
 
         <Spinner
             android:layout_width="wrap_content"
@@ -20,9 +21,10 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="District" />
+            android:text="District"
+            android:layout_gravity="center"/>
 
         <Spinner
             android:layout_width="wrap_content"
@@ -39,7 +41,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Price from:" />
+            android:text="Price from:"
+            android:layout_gravity="center" />
 
         <EditText
             android:layout_width="wrap_content"
@@ -54,7 +57,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="to" />
+            android:text="to:"
+            android:layout_gravity="center"/>
 
         <EditText
             android:layout_width="wrap_content"
@@ -76,7 +80,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Area" />
+            android:text="Area:"
+            android:layout_gravity="center"/>
 
         <EditText
             android:layout_width="fill_parent"
