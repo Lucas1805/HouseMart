@@ -7,6 +7,7 @@ import java.util.Date;
  */
 public class Advertisement {
     private String id;
+    private String ownerName;
     private String title;
     private String address;
     private String districtID;
@@ -25,17 +26,19 @@ public class Advertisement {
     private String image3;
     private Date dateCreate;
     private Date dateUpdate;
-    private String creator;
-    private String updator;
+    private String creatorID;
+    private String creatorName;
+    private String updatorID;
+    private String updatorName;
 
-    public Advertisement(String address, String area, String creator, Date dateCreate
+    public Advertisement(String address, String area, String creatorID, Date dateCreate
             , Date dateUpdate, String description, String districtID, String districtName
             , String id, String image1, String image2, String image3, String latitude
             , String longtitude, String title, String phone, String price, String provinceID
-            , String provinceName, String type, String updator) {
+            , String provinceName, String type, String updatorID) {
         this.address = address;
         this.area = area;
-        this.creator = creator;
+        this.creatorID = creatorID;
         this.dateCreate = dateCreate;
         this.dateUpdate = dateUpdate;
         this.description = description;
@@ -53,7 +56,7 @@ public class Advertisement {
         this.provinceID = provinceID;
         this.provinceName = provinceName;
         this.type = type;
-        this.updator = updator;
+        this.updatorID = updatorID;
     }
 
     /**
@@ -78,6 +81,66 @@ public class Advertisement {
         this.type = type;
     }
 
+    /**
+     * This constructor is use for load post info with detail flag is OFF. NO LATITUDE, LANGTITUDE
+     */
+    public Advertisement(String id, String ownerName, String title, String address, String districtID
+            , String districtName, String provinceID, String provinceName, String phone, String description
+            , String area, String price, String type, String image1
+            , String image2, String image3, Date dateCreate, Date dateUpdate) {
+        this.id = id;
+        this.ownerName = ownerName;
+        this.title = title;
+        this.address = address;
+        this.districtID = districtID;
+        this.districtName = districtName;
+        this.provinceID = provinceID;
+        this.provinceName = provinceName;
+        this.phone = phone;
+        this.description = description;
+        this.area = area;
+        this.price = price;
+        this.type = type;
+        this.image1 = image1;
+        this.image2 = image2;
+        this.image3 = image3;
+        this.dateCreate = dateCreate;
+        this.dateUpdate = dateUpdate;
+    }
+
+
+    /**
+     * This constructor is use for load post info with detail flag is ON. NO LATITUDE, LANGTITUDE
+     */
+    public Advertisement(String id, String ownerName, String title, String address, String districtID
+            , String districtName, String provinceID, String provinceName, String phone, String description
+            , String area, String price, String type, String image1
+            , String image2, String image3, Date dateCreate, Date dateUpdate, String creatorID, String creatorName
+            , String updatorID, String updatorName) {
+        this.id = id;
+        this.ownerName = ownerName;
+        this.title = title;
+        this.address = address;
+        this.districtID = districtID;
+        this.districtName = districtName;
+        this.provinceID = provinceID;
+        this.provinceName = provinceName;
+        this.phone = phone;
+        this.description = description;
+        this.area = area;
+        this.price = price;
+        this.type = type;
+        this.image1 = image1;
+        this.image2 = image2;
+        this.image3 = image3;
+        this.dateCreate = dateCreate;
+        this.dateUpdate = dateUpdate;
+        this.creatorID = creatorID;
+        this.creatorName = creatorName;
+        this.updatorID = updatorID;
+        this.updatorName = updatorName;
+    }
+
     public String getAddress() {
         return address;
     }
@@ -94,12 +157,20 @@ public class Advertisement {
         this.area = area;
     }
 
-    public String getCreator() {
-        return creator;
+    public String getCreatorID() {
+        return creatorID;
     }
 
-    public void setCreator(String creator) {
-        this.creator = creator;
+    public void setCreatorID(String creatorID) {
+        this.creatorID = creatorID;
+    }
+
+    public String getCreatorName() {
+        return creatorName;
+    }
+
+    public void setCreatorName(String creatorName) {
+        this.creatorName = creatorName;
     }
 
     public Date getDateCreate() {
@@ -191,11 +262,11 @@ public class Advertisement {
     }
 
     public String getOwnerName() {
-        return title;
+        return ownerName;
     }
 
-    public void setOwnerName(String title) {
-        this.title = title;
+    public void setOwnerName(String ownerName) {
+        this.ownerName = ownerName;
     }
 
     public String getPhone() {
@@ -230,6 +301,14 @@ public class Advertisement {
         this.provinceName = provinceName;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     public String getType() {
         return type;
     }
@@ -238,11 +317,19 @@ public class Advertisement {
         this.type = type;
     }
 
-    public String getUpdator() {
-        return updator;
+    public String getUpdatorID() {
+        return updatorID;
     }
 
-    public void setUpdator(String updator) {
-        this.updator = updator;
+    public void setUpdatorID(String updatorID) {
+        this.updatorID = updatorID;
+    }
+
+    public String getUpdatorName() {
+        return updatorName;
+    }
+
+    public void setUpdatorName(String updatorName) {
+        this.updatorName = updatorName;
     }
 }

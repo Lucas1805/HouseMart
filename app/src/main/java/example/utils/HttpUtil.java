@@ -109,11 +109,81 @@ public class HttpUtil {
         catch (JSONException e) {
             e.printStackTrace();
         }
-        //Sort newest advertise ment first before return
+        //Sort newest advertisement first before return
         if(list != null) {
             Collections.sort(list,new AdvertisementDateComparator());
         }
         return list;
+    }
+
+    public static Advertisement getDetailedAdvertisement(String jsonResult, boolean isDetail) {
+        Advertisement result = null;
+        JSONArray jsonArray = JSONParser.parseJSON(jsonResult);
+        try {
+            JSONObject tmp = jsonArray.getJSONObject(0);
+
+            //Create Advertisement object and add to list
+            String id = tmp.getString("postID");
+            String ownerName = tmp.getString("ownerName");
+            String title = tmp.getString("title");
+            String address = tmp.getString("address");
+            String districtID = tmp.getString("districtID");
+            String districtName = tmp.getString("districtName");
+            String provinceID = tmp.getString("provinceID");
+            String provinceName = tmp.getString("provinceName");
+            String phone = tmp.getString("phone");
+            String description = tmp.getString("description");
+            String area = tmp.getString("area");
+            String price = tmp.getString("price");
+            String type = tmp.getString("type");
+            //String latitude = tmp.getString("latitude");
+            //String longtitude = tmp.getString("longtitude");
+            String image1 = tmp.getString("image1");
+            String image2 = tmp.getString("image2");
+            String image3 = tmp.getString("image3");
+
+            //Xu ly ngay Create
+
+            SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+            Date dateObj = formater.parse(tmp.getString("dateCreate"));
+            formater.setTimeZone(TimeZone.getTimeZone("UTC"));   // This line converts the given date into UTC time zone
+            String aRevisedDate = new SimpleDateFormat("dd/MM/yyyy KK:mm:ss a").format(dateObj);
+
+            Date dateCreate = new SimpleDateFormat("dd/MM/yyyy KK:mm:ss a").parse(aRevisedDate);
+
+            //Xu ly Date Update
+            dateObj = formater.parse(tmp.getString("dateUpdate"));
+            formater.setTimeZone(TimeZone.getTimeZone("UTC"));   // This line converts the given date into UTC time zone
+            aRevisedDate = new SimpleDateFormat("dd/MM/yyyy KK:mm:ss a").format(dateObj);
+            Date dateUpdate = new SimpleDateFormat("dd/MM/yyyy KK:mm:ss a").parse(aRevisedDate);
+
+            //With detail flag is ON
+            if(isDetail) {
+                String creatorID = tmp.getString("creatorID");
+                String creatorName = tmp.getString("creatorName");
+                String updatorID = tmp.getString("updatorID");
+                String updatorName = tmp.getString("updatorName");
+
+                result = new Advertisement(id, ownerName, title, address, districtID
+                        , districtName, provinceID, provinceName, phone, description
+                        , area, price, type, image1, image2, image3, dateCreate, dateUpdate
+                        , creatorID, creatorName, updatorID, updatorName);
+
+
+            }
+            //With detail flag is OFF
+            else {
+                result = new Advertisement(id, ownerName, title, address, districtID
+                        , districtName, provinceID, provinceName, phone, description
+                        , area, price, type, image1, image2, image3, dateCreate, dateUpdate);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return result;
     }
 
     private class HttpAsyncTask extends AsyncTask<String, Void, String> {
