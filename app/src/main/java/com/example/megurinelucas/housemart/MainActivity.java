@@ -25,6 +25,8 @@ import com.example.advertisements.Advertisement;
 import com.example.provinces.Province;
 import com.example.provinces.ProvinceList;
 import com.excample.configs.ConfigConstants;
+
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -36,7 +38,12 @@ public class MainActivity extends AppCompatActivity {
 
     List<Advertisement> advertisementList = new LinkedList<>();
     List<Advertisement> searchResult = new LinkedList<>();
-    ProvinceList provinceList = new ProvinceList();
+
+    //2 list nay dung de load du lieu vao spinner
+    List<String> provinceList = new LinkedList<>();
+    List<String> districtList = new LinkedList<>();
+
+    ProvinceList provinceListDetail = new ProvinceList();
 
     FragmentManager fm = null;
     Fragment advSearchFragment = null;
@@ -86,17 +93,17 @@ public class MainActivity extends AppCompatActivity {
         //Hide advance search fragment
         expandSearch();
 
-
         if(isConnected()) {
             //Load all advertisement on server to list
             getAllAdvertisement();
 
-
-            //Get all province from server
-            getProvinceList();
-
-            //Load provinces to spinner
+            //Get province list from server and load to spinner
+            getProvinceNameList();
             loadDataProvinceSpinner();
+
+            //Load detail province list
+            getProvinceListDetail();
+
         }
         else {
             Toast.makeText(this, "No internet connection, " +
@@ -114,7 +121,12 @@ public class MainActivity extends AppCompatActivity {
                     //Do nothing
                 }
                 else {
-                    System.out.println("SELECTED CHANGE");
+                    districtList.clear();
+                    String province = sp_province.getSelectedItem().toString();
+                    districtList = provinceListDetail.getListOfDistrictName(province);
+                    Collections.sort(districtList);
+
+                    loadDataDistrictSpinner();
                 }
             }
 
@@ -145,10 +157,15 @@ public class MainActivity extends AppCompatActivity {
             String searchURL = "http://" + ConfigConstants.ipAddress + ":"
                     + ConfigConstants.port + "/api/posts?";
 
-            String province="";
-            String district="";
-            //String district = sp_district.getSelectedItem().toString();
-            //String province = sp_province.getSelectedItem().toString();
+            String district = "";
+            if(sp_district.getSelectedItemPosition() != 0) {
+                district = sp_district.getSelectedItem().toString();
+            }
+            String province = "";
+            if(sp_province.getSelectedItemPosition() != 0) {
+                province = sp_province.getSelectedItem().toString();
+            }
+
             String fromPrice = txt_fromPrice.getText().toString();
             String toPrice = txt_toPrice.getText().toString();
             String fromArea = txt_fromArea.getText().toString();
@@ -168,16 +185,18 @@ public class MainActivity extends AppCompatActivity {
                     searchURL = searchURL + "maxArea=" + toArea + "&";
                 }
                 if(district.length() > 0) {
-                    searchURL = searchURL + "districtID=" + toArea + "&";
+
+                    searchURL = searchURL + "districtID=" + provinceListDetail.getDistrictID(district) + "&";
                 }
                 if(province.length() > 0) {
-                    searchURL = searchURL + "provinceID=" + toArea + "&";
+                    searchURL = searchURL + "provinceID=" + provinceListDetail.getProvinceID(province) + "&";
                 }
 
                 searchURL = searchURL + "isDetailed=false";
 
                 HttpAsyncTask asyncTask = new HttpAsyncTask();
                 try {
+                    searchResult.clear();
                     String jsonResult = asyncTask.execute(searchURL).get();
                     this.searchResult = HttpUtil.searchAdvertisement(jsonResult);
 
@@ -247,8 +266,38 @@ public class MainActivity extends AppCompatActivity {
             return false;
     }
 
-    public void getProvinceList() {
+    public void getProvinceNameList() {
+        String url = "http://" + ConfigConstants.ipAddress + ":"
+                + ConfigConstants.port + "/api/provinces";
 
+        HttpAsyncTask asyncTask = new HttpAsyncTask();
+        try {
+            String jsonResult = asyncTask.execute(url).get();
+            this.provinceList = HttpUtil.getProvinceNameList(jsonResult);
+            Collections.sort(provinceList);
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void getProvinceListDetail() {
+        String url = "http://" + ConfigConstants.ipAddress + ":"
+                + ConfigConstants.port + "/api/districts";
+
+        HttpAsyncTask asyncTask = new HttpAsyncTask();
+        try {
+            String jsonResult = asyncTask.execute(url).get();
+            this.provinceListDetail = HttpUtil.getProvinceListDetail(jsonResult);
+            Collections.sort(provinceList);
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -303,16 +352,42 @@ public class MainActivity extends AppCompatActivity {
     public void loadDataProvinceSpinner() {
         if(provinceList != null) {
             List<String> spinnerArray =  new LinkedList<>();
-            //Province p = new Province("1","A","1","A-1");
-            //Province p2 = new Province("1","A","2","A-2");
-            spinnerArray.add("Province1");
-            spinnerArray.add("Province2");
+
+            //Add default value
+            spinnerArray.add(getResources().getString(R.string.spinnerDefaultValue));
+
+            if(provinceList.size() > 0) {
+                for (int i = 0; i < provinceList.size(); i++) {
+                    spinnerArray.add(provinceList.get(i));
+                }
+            }
 
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                     this, android.R.layout.simple_spinner_item, spinnerArray);
 
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             sp_province.setAdapter(adapter);
+        }
+    }
+
+    public void loadDataDistrictSpinner() {
+        if(provinceList != null) {
+            List<String> spinnerArray =  new LinkedList<>();
+
+            //Add default value
+            spinnerArray.add(getResources().getString(R.string.spinnerDefaultValue));
+
+            if(districtList.size() > 0) {
+                for (int i = 0; i < districtList.size(); i++) {
+                    spinnerArray.add(districtList.get(i));
+                }
+            }
+
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                    this, android.R.layout.simple_spinner_item, spinnerArray);
+
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            sp_district.setAdapter(adapter);
         }
     }
 

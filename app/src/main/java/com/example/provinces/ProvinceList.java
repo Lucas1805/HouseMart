@@ -16,6 +16,13 @@ public class ProvinceList {
     public ProvinceList() {
     }
 
+    public int getSize() {
+        return list.size();
+    }
+
+    public List<Province> getList() {
+        return list;
+    }
     public void setList(List<Province> list) {
         this.list = list;
     }
@@ -24,27 +31,20 @@ public class ProvinceList {
      * Ham su dung de lay ra list cac province name roi dung list do load vao spinner khi moi chay app
      * @return
      */
-    public List<String> getListOfProvinceNames(String firstDefaultValue) {
+    public List<String> getListOfProvinceNames() {
         List<String> tmp = new LinkedList<>();
         for (int i = 0; i < list.size(); i++) {
             tmp.add(list.get(i).getProvinceName());
         }
-        tmp.add(0,firstDefaultValue);
         return tmp;
     }
 
-    /**
-     * Lay ra tat ca cac district sau khi nguoi dung da chon province, Roi dung de load vo spinner
-     * @param provinceName
-     * @return
-     */
-    public List<String> getListOfDistrictNames(String firstDefaultValue, String provinceName) {
+    public List<String> getListOfDistrictName (String provinceName) {
         List<String> tmp = new LinkedList<>();
         for (int i = 0; i < list.size(); i++) {
-            if(list.get(i).getProvinceName().equals(provinceName))
+            if(list.get(i).getProvinceName().compareTo(provinceName) == 0)
                 tmp.add(list.get(i).getDistrictName());
         }
-        tmp.add(0,firstDefaultValue);
         return tmp;
     }
 
@@ -59,7 +59,7 @@ public class ProvinceList {
 
     public String getDistrictID (String districtName) {
         for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).getDistrictName().equals(districtName)) {
+            if (list.get(i).getDistrictName().compareTo(districtName) == 0) {
                 return list.get(i).getDistrictID();
             }
         }

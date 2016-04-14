@@ -3,6 +3,8 @@ package example.utils;
 import android.os.AsyncTask;
 
 import com.example.advertisements.Advertisement;
+import com.example.provinces.Province;
+import com.example.provinces.ProvinceList;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,7 +37,6 @@ public class HttpUtil {
         try {
             Response respone = client.newCall(request).execute();
             result = respone.body().string();
-            System.out.println("RESPONSE BODY NE: " +result);
             JSONArray jsonArray =  new JSONArray(result);
         }
         catch(IOException e) {
@@ -190,6 +191,53 @@ public class HttpUtil {
             e.printStackTrace();
         }
 
+        return result;
+    }
+
+    public static List<String> getProvinceNameList (String jsonResult) {
+        List<String> tmpList = new LinkedList<>();
+        try {
+            JSONArray jsonArray = JSONParser.parseJSON(jsonResult);
+            if(jsonArray != null && jsonArray.length() > 0) {
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject tmp = jsonArray.getJSONObject(i);
+                    tmpList.add(tmp.getString("provinceName"));
+                }// End of for
+            }
+        }
+        catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return tmpList;
+    }
+
+    public static ProvinceList getProvinceListDetail (String jsonResult) {
+        List<Province> tmpList = new LinkedList<>();
+        ProvinceList result = null;
+        try {
+            JSONArray jsonArray = JSONParser.parseJSON(jsonResult);
+            if(jsonArray != null && jsonArray.length() > 0) {
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject tmp = jsonArray.getJSONObject(i);
+
+                    //Create province with detail object and add to list
+                    String provinceID = tmp.getString("provinceID");
+                    String provinceName = tmp.getString("provinceName");
+                    String districtID = tmp.getString("districtID");
+                    String districtName = tmp.getString("districtName");
+
+                    Province p = new Province(districtID,districtName,provinceID,provinceName);
+
+                    tmpList.add(p);
+                }// End of for
+            }
+        }
+        catch (JSONException e) {
+            e.printStackTrace();
+        }
+        if(tmpList.size() > 0) {
+            result = new ProvinceList(tmpList);
+        }
         return result;
     }
 

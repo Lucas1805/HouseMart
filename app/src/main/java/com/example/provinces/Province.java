@@ -17,6 +17,11 @@ public class Province {
         this.provinceName = provinceName;
     }
 
+    @Override
+    public String toString() {
+        return provinceID + provinceName + districtID + districtName;
+    }
+
     public String getDistrictID() {
         return districtID;
     }
