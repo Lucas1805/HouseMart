@@ -16,6 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.TimeZone;
+import java.util.concurrent.ExecutionException;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -110,9 +111,15 @@ public class HttpUtil {
             e.printStackTrace();
         }
         //Sort newest advertisement first before return
-        if(list != null) {
+        if(list.size() > 0) {
             Collections.sort(list,new AdvertisementDateComparator());
         }
+        return list;
+    }
+
+    public static List<Advertisement> searchAdvertisement(String jsonResult) {
+        List<Advertisement> list;
+        list = makeAdvertisementList(jsonResult);
         return list;
     }
 

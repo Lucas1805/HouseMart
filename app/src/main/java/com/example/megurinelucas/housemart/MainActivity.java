@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
         sp_province = (Spinner) findViewById(R.id.sp_province);
         sp_district = (Spinner) findViewById(R.id.sp_district);
         txt_fromPrice = (EditText) findViewById(R.id.txt_fromPrice);
-        txt_toPrice = (EditText) findViewById(R.id.txt_fromPrice);
+        txt_toPrice = (EditText) findViewById(R.id.txt_toPrice);
         txt_fromArea = (EditText) findViewById(R.id.txt_fromArea);
         txt_toArea = (EditText) findViewById(R.id.txt_toArea);
 
@@ -129,8 +129,8 @@ public class MainActivity extends AppCompatActivity {
     public void getAllAdvertisement() {
         HttpAsyncTask asyncTask = new HttpAsyncTask();
         try {
-            String tmp = asyncTask.execute(getAllURL).get();
-            this. advertisementList = HttpUtil.makeAdvertisementList(tmp);
+            String jsonResult = asyncTask.execute(getAllURL).get();
+            this.advertisementList = HttpUtil.makeAdvertisementList(jsonResult);
 
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -139,27 +139,60 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
     public void doSearch(View v){
         //Check if phone is connect to internet before search
         if(isConnected()) {
             String searchURL = "http://" + ConfigConstants.ipAddress + ":"
                     + ConfigConstants.port + "/api/posts?";
 
-            System.out.println("DO ADVANCE SEARCH");
-
+            String province="";
+            String district="";
+            //String district = sp_district.getSelectedItem().toString();
+            //String province = sp_province.getSelectedItem().toString();
             String fromPrice = txt_fromPrice.getText().toString();
             String toPrice = txt_toPrice.getText().toString();
             String fromArea = txt_fromArea.getText().toString();
             String toArea = txt_toArea.getText().toString();
 
+            if(checkEmptyField(district,province,fromPrice,toPrice,fromArea,toArea) == false) {
+                if(fromPrice.length() > 0) {
+                    searchURL = searchURL + "minPrice=" + fromPrice + "&";
+                }
+                if(toPrice.length() > 0) {
+                    searchURL = searchURL + "maxPrice=" + toPrice + "&";
+                }
+                if(fromArea.length() > 0) {
+                    searchURL = searchURL + "minArea=" + fromArea + "&";
+                }
+                if(toArea.length() > 0) {
+                    searchURL = searchURL + "maxArea=" + toArea + "&";
+                }
+                if(district.length() > 0) {
+                    searchURL = searchURL + "districtID=" + toArea + "&";
+                }
+                if(province.length() > 0) {
+                    searchURL = searchURL + "provinceID=" + toArea + "&";
+                }
+
+                searchURL = searchURL + "isDetailed=false";
+
+                HttpAsyncTask asyncTask = new HttpAsyncTask();
+                try {
+                    String jsonResult = asyncTask.execute(searchURL).get();
+                    this.searchResult = HttpUtil.searchAdvertisement(jsonResult);
+
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
+            }
 
         }
         else {
             Toast.makeText(this, "No internet connection, " +
                     "please check again", Toast.LENGTH_LONG).show();
         }
-        //Toast.makeText(this, "Basic search started: ", Toast.LENGTH_LONG).show();
     }
 
     /**
