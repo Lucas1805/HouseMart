@@ -4,7 +4,8 @@ import android.os.AsyncTask;
 
 import com.example.models.Advertisement;
 import com.example.models.Province;
-import com.example.models.ProvinceList;
+import com.example.models.ProvinceDetail;
+import com.example.models.ProvinceDetailList;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -211,9 +212,9 @@ public class HttpUtil {
         return tmpList;
     }
 
-    public static ProvinceList getProvinceListDetail (String jsonResult) {
-        List<Province> tmpList = new LinkedList<>();
-        ProvinceList result = null;
+    public static ProvinceDetailList getProvinceListDetail (String jsonResult) {
+        List<ProvinceDetail> tmpList = new LinkedList<>();
+        ProvinceDetailList result = null;
         try {
             JSONArray jsonArray = JSONParser.parseJSON(jsonResult);
             if(jsonArray != null && jsonArray.length() > 0) {
@@ -226,7 +227,7 @@ public class HttpUtil {
                     String districtID = tmp.getString("districtID");
                     String districtName = tmp.getString("districtName");
 
-                    Province p = new Province(districtID,districtName,provinceID,provinceName);
+                    ProvinceDetail p = new ProvinceDetail(districtID,districtName,provinceID,provinceName);
 
                     tmpList.add(p);
                 }// End of for
@@ -236,7 +237,7 @@ public class HttpUtil {
             e.printStackTrace();
         }
         if(tmpList.size() > 0) {
-            result = new ProvinceList(tmpList);
+            result = new ProvinceDetailList(tmpList);
         }
         return result;
     }
