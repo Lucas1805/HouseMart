@@ -28,7 +28,20 @@
             android:onClick="expandSearch"/>
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
+        <fragment
+            android:name="com.example.fragments.ListAdvertisement_Fragment"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/listAdvertisement_Fragment"
+            tools:layout="@layout/fragment_listadvetisement" />
+
+    </LinearLayout>
 
 
 </LinearLayout>

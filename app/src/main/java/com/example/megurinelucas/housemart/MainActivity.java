@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -14,9 +15,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.adapter.ListAdvertisementAdapter;
 import com.example.utils.HttpUtil;
 
 import com.example.fragments.AdvanceSearch_Fragment;
@@ -45,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
     FragmentManager fm = null;
     Fragment advSearchFragment = null;
+    Fragment listAdvFragment = null;
 
     //Declare element for search
     ImageButton btn_Search = null;
@@ -56,6 +61,8 @@ public class MainActivity extends AppCompatActivity {
     EditText txt_toArea = null;
     Spinner sp_district = null;
     Spinner sp_province = null;
+
+    ListView listAdView = null;
 
     // Use to store boolean for expand or hide advance search
     // willBeExpanded = false => Advance Search is showing, It WILL BE HIDE
@@ -94,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
         if(isConnected()) {
             //Load all advertisement on server to list
             getAllAdvertisement();
+            addDataToListAdvertisement(advertisementList);
 
             //Get province list from server and load to spinner
             getProvinceNameList();
@@ -133,6 +141,28 @@ public class MainActivity extends AppCompatActivity {
                 // your code here
             }
 
+        });
+    }
+
+    /**
+     * This function is to add List of Advertisement data to the Adapter
+     *
+     * @param adList list of Advertisement to be added
+     */
+    private void addDataToListAdvertisement(List<Advertisement> adList){
+        listAdView = (ListView) findViewById(R.id.listAdvertisement);
+        listAdView.setAdapter(new ListAdvertisementAdapter(this, adList));
+
+        //handle onItemClick event
+        listAdView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                TextView idView = (TextView) view.findViewById(R.id.hiddenID);
+                Intent adDetailActivity = new Intent(MainActivity.this, AdDetailActivity.class);
+                //add AdID to AdDetailActivity
+                adDetailActivity.putExtra("adID", idView.getText());
+                startActivity(adDetailActivity);
+            }
         });
     }
 
@@ -197,6 +227,7 @@ public class MainActivity extends AppCompatActivity {
                     searchResult.clear();
                     String jsonResult = asyncTask.execute(searchURL).get();
                     this.searchResult = HttpUtil.searchAdvertisement(jsonResult);
+                    addDataToListAdvertisement(this.searchResult);
 
                 } catch (InterruptedException e) {
                     e.printStackTrace();

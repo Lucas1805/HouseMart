@@ -125,9 +125,10 @@ public class HttpUtil {
 
     public static Advertisement getDetailedAdvertisement(String jsonResult, boolean isDetail) {
         Advertisement result = null;
-        JSONArray jsonArray = JSONParser.parseJSON(jsonResult);
+        //JSONArray jsonArray = JSONParser.parseJSON(jsonResult);
         try {
-            JSONObject tmp = jsonArray.getJSONObject(0);
+            //JSONObject tmp = jsonArray.getJSONObject(0);
+            JSONObject tmp=JSONParser.parseJSONto1Obj(jsonResult);
 
             //Create Advertisement object and add to list
             String id = tmp.getString("postID");
