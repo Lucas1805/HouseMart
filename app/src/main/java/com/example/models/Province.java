@@ -1,4 +1,4 @@
-package com.example.provinces;
+package com.example.models;
 
 /**
  * Created by Megurine Lucas on 13-04-2016.

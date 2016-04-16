@@ -1,10 +1,10 @@
-package example.utils;
+package com.example.utils;
 
 import android.os.AsyncTask;
 
-import com.example.advertisements.Advertisement;
-import com.example.provinces.Province;
-import com.example.provinces.ProvinceList;
+import com.example.models.Advertisement;
+import com.example.models.Province;
+import com.example.models.ProvinceList;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,7 +18,6 @@ import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.TimeZone;
-import java.util.concurrent.ExecutionException;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;

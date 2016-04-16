@@ -1,4 +1,4 @@
-package com.example.advertisements;
+package com.example.models;
 
 import java.util.Date;
 

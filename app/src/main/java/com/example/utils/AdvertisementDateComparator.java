@@ -1,6 +1,6 @@
-package example.utils;
+package com.example.utils;
 
-import com.example.advertisements.Advertisement;
+import com.example.models.Advertisement;
 
 import java.util.Comparator;
 

@@ -13,7 +13,7 @@
         android:orientation="vertical">
 
         <fragment
-            android:name="com.emxample.fragments.AdvanceSearch_Fragment"
+            android:name="com.example.fragments.AdvanceSearch_Fragment"
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

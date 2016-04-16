@@ -1,4 +1,4 @@
-package com.excample.configs;
+package com.example.configs;
 
 /**
  * Created by Megurine Lucas on 29-03-2016.

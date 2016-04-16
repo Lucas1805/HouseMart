@@ -17,14 +17,12 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import example.utils.HttpUtil;
+import com.example.utils.HttpUtil;
 
-import com.emxample.fragments.AdvanceSearch_Fragment;
-import com.emxample.fragments.BasicSearch_Fragment;
-import com.example.advertisements.Advertisement;
-import com.example.provinces.Province;
-import com.example.provinces.ProvinceList;
-import com.excample.configs.ConfigConstants;
+import com.example.fragments.AdvanceSearch_Fragment;
+import com.example.models.Advertisement;
+import com.example.models.ProvinceList;
+import com.example.configs.ConfigConstants;
 
 import java.util.Collections;
 import java.util.LinkedList;

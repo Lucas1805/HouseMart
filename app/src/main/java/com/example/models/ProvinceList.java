@@ -1,4 +1,4 @@
-package com.example.provinces;
+package com.example.models;
 
 import java.util.LinkedList;
 import java.util.List;
