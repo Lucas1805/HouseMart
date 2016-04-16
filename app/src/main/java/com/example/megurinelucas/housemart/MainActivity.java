@@ -21,11 +21,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.adapter.ListAdvertisementAdapter;
+import com.example.models.ProvinceList;
 import com.example.utils.HttpUtil;
 
 import com.example.fragments.AdvanceSearch_Fragment;
 import com.example.models.Advertisement;
-import com.example.models.ProvinceList;
+import com.example.models.ProvinceDetailList;
 import com.example.configs.ConfigConstants;
 
 import java.util.Collections;
@@ -42,14 +43,16 @@ public class MainActivity extends AppCompatActivity {
     List<Advertisement> searchResult = new LinkedList<>();
 
     //2 list nay dung de load du lieu vao spinner
-    List<String> provinceList = new LinkedList<>();
+    List<String> provinceNameList = new LinkedList<>();
     List<String> districtList = new LinkedList<>();
 
-    ProvinceList provinceListDetail = new ProvinceList();
+    ProvinceDetailList provinceDetailListDetail = new ProvinceDetailList();
+
+    //List dung de lay ID cho province
+    ProvinceList pList = new ProvinceList();
 
     FragmentManager fm = null;
     Fragment advSearchFragment = null;
-    Fragment listAdvFragment = null;
 
     //Declare element for search
     ImageButton btn_Search = null;
@@ -70,8 +73,6 @@ public class MainActivity extends AppCompatActivity {
     // Default value here = false to hide advance search for fist time load app
     boolean willBeExpanded = false;
 
-    //Use to suspend setOnItemSelectedListener for province spinner when first time loading app
-    boolean firstTimeLoading = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,6 +111,9 @@ public class MainActivity extends AppCompatActivity {
             //Load detail province list
             getProvinceListDetail();
 
+            //Load data for province list
+            this.pList = this.provinceDetailListDetail.getListOfProvince();
+
         }
         else {
             Toast.makeText(this, "No internet connection, " +
@@ -129,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
                 else {
                     districtList.clear();
                     String province = sp_province.getSelectedItem().toString();
-                    districtList = provinceListDetail.getListOfDistrictName(province);
+                    districtList = provinceDetailListDetail.getListOfDistrictName(province);
                     Collections.sort(districtList);
 
                     loadDataDistrictSpinner();
@@ -186,11 +190,11 @@ public class MainActivity extends AppCompatActivity {
                     + ConfigConstants.port + "/api/posts?";
 
             String district = "";
-            if(sp_district.getSelectedItemPosition() != 0) {
+            if(sp_district.getSelectedItemPosition() > 0) {
                 district = sp_district.getSelectedItem().toString();
             }
             String province = "";
-            if(sp_province.getSelectedItemPosition() != 0) {
+            if(sp_province.getSelectedItemPosition() > 0) {
                 province = sp_province.getSelectedItem().toString();
             }
 
@@ -214,13 +218,14 @@ public class MainActivity extends AppCompatActivity {
                 }
                 if(district.length() > 0) {
 
-                    searchURL = searchURL + "districtID=" + provinceListDetail.getDistrictID(district) + "&";
+                    searchURL = searchURL + "districtID=" + provinceDetailListDetail.getDistrictID(district) + "&";
                 }
                 if(province.length() > 0) {
-                    searchURL = searchURL + "provinceID=" + provinceListDetail.getProvinceID(province) + "&";
+                    searchURL = searchURL + "provinceID=" + pList.getProvinceIDByPosition(sp_province.getSelectedItemPosition()) + "&";
                 }
 
                 searchURL = searchURL + "isDetailed=false";
+                System.out.println("SEARCH URL: " + searchURL);
 
                 HttpAsyncTask asyncTask = new HttpAsyncTask();
                 try {
@@ -302,8 +307,9 @@ public class MainActivity extends AppCompatActivity {
         HttpAsyncTask asyncTask = new HttpAsyncTask();
         try {
             String jsonResult = asyncTask.execute(url).get();
-            this.provinceList = HttpUtil.getProvinceNameList(jsonResult);
-            Collections.sort(provinceList);
+            this.provinceNameList = HttpUtil.getProvinceNameList(jsonResult);
+
+            Collections.sort(provinceNameList);
 
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -319,8 +325,7 @@ public class MainActivity extends AppCompatActivity {
         HttpAsyncTask asyncTask = new HttpAsyncTask();
         try {
             String jsonResult = asyncTask.execute(url).get();
-            this.provinceListDetail = HttpUtil.getProvinceListDetail(jsonResult);
-            Collections.sort(provinceList);
+            this.provinceDetailListDetail = HttpUtil.getProvinceListDetail(jsonResult);
 
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -379,15 +384,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void loadDataProvinceSpinner() {
-        if(provinceList != null) {
+        if(provinceNameList != null) {
             List<String> spinnerArray =  new LinkedList<>();
 
             //Add default value
             spinnerArray.add(getResources().getString(R.string.spinnerDefaultValue));
 
-            if(provinceList.size() > 0) {
-                for (int i = 0; i < provinceList.size(); i++) {
-                    spinnerArray.add(provinceList.get(i));
+            if(provinceNameList.size() > 0) {
+                for (int i = 0; i < provinceNameList.size(); i++) {
+                    spinnerArray.add(provinceNameList.get(i));
                 }
             }
 
@@ -400,7 +405,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void loadDataDistrictSpinner() {
-        if(provinceList != null) {
+        if(provinceNameList != null) {
             List<String> spinnerArray =  new LinkedList<>();
 
             //Add default value

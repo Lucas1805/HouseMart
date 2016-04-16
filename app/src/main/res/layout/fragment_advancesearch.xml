@@ -5,6 +5,7 @@
 
     <ImageButton
         android:id="@+id/btn_Search"
+        android:background="#228B22"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_search_white_24dp"
