@@ -247,6 +247,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 searchURL = searchURL + "isDetailed=false";
+                System.out.println("SEARCH URL: " + searchURL);
 
                 HttpAsyncTask asyncTask = new HttpAsyncTask();
                 try {
