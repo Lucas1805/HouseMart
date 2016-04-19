@@ -8,4 +8,10 @@
     <dimen name="area">13dip</dimen>
     <dimen name="price">15dip</dimen>
     <dimen name="date_created">13dip</dimen>
+
+    <dimen name="detail_title">25dp</dimen>
+    <dimen name="detail_address">15dip</dimen>
+    <dimen name="detail_area">13dip</dimen>
+    <dimen name="detail_price">15dip</dimen>
+    <dimen name="detail_date_created">13dip</dimen>
 </resources>

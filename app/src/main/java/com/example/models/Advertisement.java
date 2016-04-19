@@ -66,7 +66,7 @@ public class Advertisement {
     public Advertisement(String address, String area, Date dateCreate
             , Date dateUpdate, String districtID, String districtName
             , String id, String title, String price, String provinceID
-            , String provinceName, String type) {
+            , String provinceName, String type, String image1) {
         this.address = address;
         this.area = area;
         this.dateCreate = dateCreate;
@@ -79,6 +79,7 @@ public class Advertisement {
         this.provinceID = provinceID;
         this.provinceName = provinceName;
         this.type = type;
+        this.image1=image1;
     }
 
     /**
