@@ -10,79 +10,9 @@
         android:id="@+id/adID"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
-
-    <fragment
-        android:id="@+id/imageSlider_Fragment"
-        android:name="com.example.fragments.ImageSlider_Fragment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:layout="@layout/fragment_image_slider" />
-
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:divider="@color/list_divider"
-        android:showDividers="end">
-
-        <TextView
-            android:id="@+id/adTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/detail_title"
-            android:textStyle="bold"
-            android:textAlignment="center"/>
-
-        <TextView
-            android:id="@+id/adAddress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/detail_address"
-            android:textAlignment="center"/>
-
-        <TextView
-            android:id="@+id/adPrice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/detail_price"
-            android:textColor="@color/price"
-            android:textAlignment="center"/>
-
-        <TextView
-            android:id="@+id/adLastUpdate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/detail_date_created"
-            android:textAlignment="viewEnd"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:divider="@color/list_divider"
-        android:showDividers="end">
-
-        <ImageButton
-            android:id="@+id/btn_Map"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_place_black_24dp"
-            android:background="@drawable/btn_map"
-            android:onClick=""
-            android:tint="@color/btn_map"/>
-
-        <ImageButton
-            android:id="@+id/btn_Call"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_call_black_24dp"
-            android:background="@drawable/btn_call"
-            android:onClick=""
-            android:tint="@color/btn_call"/>
-
-        </LinearLayout>
+    <TextView
+        android:id="@+id/adTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>

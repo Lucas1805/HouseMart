@@ -98,7 +98,7 @@ public class HttpUtil {
 
                         Advertisement tmpAd = new Advertisement(address, area, dateCreate
                                 , dateUpdate, districtID, districtName, id, title
-                                , price, provinceID, provinceName, type, image1);
+                                , price, provinceID, provinceName, type);
 
                         list.add(tmpAd);
                     }

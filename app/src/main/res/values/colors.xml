@@ -1,18 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!--<color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>-->
-    <color name="colorPrimary">#32CD32</color>
-    <color name="colorPrimaryDark">#228B22</color>
     <color name="colorAccent">#FF4081</color>
 
-    <color name="btn_call">#32CD32</color>
-    <color name="btn_map">#F74A4A</color>
-
-
     <color name="area">#666666</color>
-    <color name="price">#F74A4A</color>
+    <color name="price">#666666</color>
     <color name="date_created">#666666</color>
     <color name="list_divider">#d9d9d9</color>
     <color name="list_row_start_color">#ffffff</color>
