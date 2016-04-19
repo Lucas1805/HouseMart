@@ -62,7 +62,9 @@
             android:ems="10"
             android:id="@+id/txt_fromPrice"
             android:layout_gravity="bottom"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:nextFocusUp="@id/btn_Search"
+            android:nextFocusLeft="@id/btn_Search"/>/>
 
         <TextView
             android:layout_width="wrap_content"

@@ -79,7 +79,7 @@ public class ListAdvertisementAdapter extends BaseAdapter {
         // thumbnail image
         // test link online, using volley
         if (!ad.getImage1().equalsIgnoreCase("null"))
-            thumbNail.setImageUrl("http://" + ConfigConstants.ipAddress + ":" + ConfigConstants.port + ad.getImage1(), imageLoader);
+            thumbNail.setImageUrl("http://" + ConfigConstants.IP_ADDRESS + ":" + ConfigConstants.PORT + ad.getImage1(), imageLoader);
         else thumbNail.setImageUrl(ConfigConstants.DEFAULT_IMAGE_URL, imageLoader);
 
 

@@ -2,13 +2,17 @@ package com.example.megurinelucas.housemart;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,9 +35,11 @@ import java.util.concurrent.ExecutionException;
  */
 public class AdDetailActivity extends AppCompatActivity {
 
-    final String getAdURL = "http://" + ConfigConstants.ipAddress
-            + ":" + ConfigConstants.port + "/api/posts/";
+    final String getAdURL = "http://" + ConfigConstants.IP_ADDRESS
+            + ":" + ConfigConstants.PORT + "/api/posts/";
     private List<String> imgUrls = new ArrayList<>();
+
+    Advertisement ad = null;
 
     TextView title;
     TextView address;
@@ -49,20 +55,20 @@ public class AdDetailActivity extends AppCompatActivity {
             //TextView id = (TextView) findViewById(R.id.adID);
 
             Intent intent = getIntent();
-            Advertisement ad = getAdvertisement(intent.getStringExtra("adID"));
+            ad = getAdvertisement(intent.getStringExtra("adID"));
 
             getSupportActionBar().setTitle(ad.getTitle());
 
             //id.setText(ad.getId());
 
             if (!ad.getImage1().equalsIgnoreCase("null")) {
-                imgUrls.add("http://"+ConfigConstants.ipAddress + ":" + ConfigConstants.port + ad.getImage1());
+                imgUrls.add("http://"+ConfigConstants.IP_ADDRESS + ":" + ConfigConstants.PORT + ad.getImage1());
             }
             if(!ad.getImage2().equalsIgnoreCase("null")){
-                imgUrls.add("http://"+ConfigConstants.ipAddress + ":" + ConfigConstants.port + ad.getImage2());
+                imgUrls.add("http://"+ConfigConstants.IP_ADDRESS + ":" + ConfigConstants.PORT + ad.getImage2());
             }
             if(!ad.getImage3().equalsIgnoreCase("null")){
-                imgUrls.add("http://"+ConfigConstants.ipAddress + ":" + ConfigConstants.port + ad.getImage3());
+                imgUrls.add("http://"+ConfigConstants.IP_ADDRESS + ":" + ConfigConstants.PORT + ad.getImage3());
             }
 
             if (imgUrls.size() == 0) {
@@ -104,6 +110,62 @@ public class AdDetailActivity extends AppCompatActivity {
         }
         return null;
     }
+
+    public void callOwner(View v) {
+        if(ad != null) {
+            String uri = "tel:";
+            uri = uri + ad.getPhone() ;
+            Intent intent = new Intent(Intent.ACTION_DIAL);
+            intent.setData(Uri.parse(uri));
+            startActivity(intent);
+        }
+    }
+
+    public void getDirection(View v) {
+        if(isGoogleMapsInstalled()) {
+            String latitude = ad.getLatitude();
+            String longtitude = ad.getLongtitude();
+            System.out.println(latitude + longtitude);
+            if(latitude != null && longtitude != null) {
+                Uri gmmIntentUri = Uri.parse("google.navigation:q=" + latitude + "," + longtitude + "&mode=d");
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                mapIntent.setPackage("com.google.android.apps.maps");
+                startActivity(mapIntent);
+
+            }
+            else {
+                String addressString = address.getText().toString();
+                System.out.println(addressString);
+                Uri gmmIntentUri = Uri.parse("google.navigation:q=" + addressString + "&mode=d");
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                mapIntent.setPackage("com.google.android.apps.maps");
+                startActivity(mapIntent);
+            }
+        }
+        else {
+            Toast.makeText(this, "Google Map is not installed on device! " +
+                    "Please install it before using this function", Toast.LENGTH_LONG).show();
+        }
+
+    }
+
+    /**
+     * This function is check if device have install Google Map or not
+     * @return
+     */
+    public boolean isGoogleMapsInstalled()
+    {
+        try
+        {
+            ApplicationInfo info = getPackageManager().getApplicationInfo("com.google.android.apps.maps", 0 );
+            return true;
+        }
+        catch(PackageManager.NameNotFoundException e)
+        {
+            return false;
+        }
+    }
+
 
     /**
      * This method use to run sendGetRequest method, because cannot sen get request in same thread

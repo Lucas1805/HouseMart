@@ -14,7 +14,9 @@ public class ProvinceList {
     }
 
     public String getProvinceIDByName (String provinceName) {
+        System.out.println("LIST SIZE " + list.size());
         for (int i = 0; i < list.size(); i++) {
+            System.out.println(i);
             System.out.println(list.get(i).getProvinceName());
             if (list.get(i).getProvinceName().equals(provinceName)) {
                 return list.get(i).getId();

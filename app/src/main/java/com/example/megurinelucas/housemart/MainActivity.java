@@ -36,8 +36,8 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity {
-    final String getAllURL = "http://" + ConfigConstants.ipAddress
-            + ":" + ConfigConstants.port + "/api/posts";
+    final String getAllURL = "http://" + ConfigConstants.IP_ADDRESS
+            + ":" + ConfigConstants.PORT + "/api/posts";
 
     List<Advertisement> advertisementList = new LinkedList<>();
     List<Advertisement> searchResult = new LinkedList<>();
@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
             getProvinceListDetail();
 
             //Load data for province list
-            this.pList = this.provinceDetailListDetail.getListOfProvince();
+            getProvinceList();
 
         }
         else {
@@ -208,8 +208,8 @@ public class MainActivity extends AppCompatActivity {
     public void doSearch(View v){
         //Check if phone is connect to internet before search
         if(isConnected()) {
-            String searchURL = "http://" + ConfigConstants.ipAddress + ":"
-                    + ConfigConstants.port + "/api/posts?";
+            String searchURL = "http://" + ConfigConstants.IP_ADDRESS + ":"
+                    + ConfigConstants.PORT + "/api/posts?";
 
             String district = "";
             if(sp_district.getSelectedItemPosition() > 0) {
@@ -243,7 +243,7 @@ public class MainActivity extends AppCompatActivity {
                     searchURL = searchURL + "districtID=" + provinceDetailListDetail.getDistrictID(district) + "&";
                 }
                 if(province.length() > 0) {
-                    searchURL = searchURL + "provinceID=" + pList.getProvinceIDByPosition(sp_province.getSelectedItemPosition()) + "&";
+                    searchURL = searchURL + "provinceID=" + pList.getProvinceIDByName(province) + "&";
                 }
 
                 searchURL = searchURL + "isDetailed=false";
@@ -254,6 +254,7 @@ public class MainActivity extends AppCompatActivity {
                     searchResult.clear();
                     String jsonResult = asyncTask.execute(searchURL).get();
                     this.searchResult = HttpUtil.searchAdvertisement(jsonResult);
+                    System.out.println("SIZE NE: " + searchResult.size());
                     addDataToListAdvertisement(this.searchResult);
 
                 } catch (InterruptedException e) {
@@ -325,8 +326,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void getProvinceNameList() {
-        String url = "http://" + ConfigConstants.ipAddress + ":"
-                + ConfigConstants.port + "/api/provinces";
+        String url = "http://" + ConfigConstants.IP_ADDRESS + ":"
+                + ConfigConstants.PORT + "/api/provinces";
 
         HttpAsyncTask asyncTask = new HttpAsyncTask();
         try {
@@ -342,9 +343,25 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void getProvinceList() {
+        String url = "http://" + ConfigConstants.IP_ADDRESS + ":"
+                + ConfigConstants.PORT + "/api/provinces";
+
+        HttpAsyncTask asyncTask = new HttpAsyncTask();
+        try {
+            String jsonResult = asyncTask.execute(url).get();
+            this.pList = HttpUtil.getAllProvince(jsonResult);
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void getProvinceListDetail() {
-        String url = "http://" + ConfigConstants.ipAddress + ":"
-                + ConfigConstants.port + "/api/districts";
+        String url = "http://" + ConfigConstants.IP_ADDRESS + ":"
+                + ConfigConstants.PORT + "/api/districts";
 
         HttpAsyncTask asyncTask = new HttpAsyncTask();
         try {

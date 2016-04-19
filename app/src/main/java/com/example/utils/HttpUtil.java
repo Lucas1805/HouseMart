@@ -6,6 +6,7 @@ import com.example.models.Advertisement;
 import com.example.models.Province;
 import com.example.models.ProvinceDetail;
 import com.example.models.ProvinceDetailList;
+import com.example.models.ProvinceList;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -145,8 +146,19 @@ public class HttpUtil {
             String area = tmp.getString("area");
             String price = tmp.getString("price");
             String type = tmp.getString("type");
-            //String latitude = tmp.getString("latitude");
-            //String longtitude = tmp.getString("longtitude");
+
+            String latitude = null;
+            String longtitude = null;
+            //Check for lat and long
+            if(tmp.getString("latitude") != null) {
+                latitude = tmp.getString("latitude");
+            }
+
+            if(tmp.getString("longitude") != null) {
+                longtitude = tmp.getString("longitude");
+            }
+
+
             String image1 = tmp.getString("image1");
             String image2 = tmp.getString("image2");
             String image3 = tmp.getString("image3");
@@ -184,7 +196,8 @@ public class HttpUtil {
             else {
                 result = new Advertisement(id, ownerName, title, address, districtID
                         , districtName, provinceID, provinceName, phone, description
-                        , area, price, type, image1, image2, image3, dateCreate, dateUpdate);
+                        , area, price, type, latitude, longtitude, image1
+                        , image2, image3, dateCreate, dateUpdate);
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -240,6 +253,34 @@ public class HttpUtil {
             result = new ProvinceDetailList(tmpList);
         }
         return result;
+    }
+
+    public static ProvinceList getAllProvince (String jsonResult) {
+        List<Province> tmpList = new LinkedList<>();
+        ProvinceList result = new ProvinceList();
+        try {
+            JSONArray jsonArray = JSONParser.parseJSON(jsonResult);
+            if(jsonArray != null && jsonArray.length() > 0) {
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject tmp = jsonArray.getJSONObject(i);
+
+                    //Create province with detail object and add to list
+                    String provinceID = tmp.getString("provinceID");
+                    String provinceName = tmp.getString("provinceName");
+
+                    Province p = new Province(provinceID,provinceName);
+
+                    tmpList.add(p);
+                }// End of for
+            }
+        }
+        catch (JSONException e) {
+            e.printStackTrace();
+        }
+        if(tmpList.size() > 0) {
+            result.setList(tmpList);
+        }
+        return  result;
     }
 
     private class HttpAsyncTask extends AsyncTask<String, Void, String> {

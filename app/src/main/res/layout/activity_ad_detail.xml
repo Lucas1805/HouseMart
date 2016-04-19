@@ -71,7 +71,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_place_black_24dp"
             android:background="@drawable/btn_map"
-            android:onClick=""
+            android:onClick="getDirection"
             android:tint="@color/btn_map"/>
 
         <ImageButton
@@ -80,7 +80,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_call_black_24dp"
             android:background="@drawable/btn_call"
-            android:onClick=""
+            android:onClick="callOwner"
             android:tint="@color/btn_call"/>
 
         </LinearLayout>

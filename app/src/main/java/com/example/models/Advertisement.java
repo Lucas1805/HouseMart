@@ -109,6 +109,34 @@ public class Advertisement {
         this.dateUpdate = dateUpdate;
     }
 
+    /**
+     * This constructor is use for load post info with detail flag is OFF. HAVE LATITUDE, LANGTITUDE
+     */
+    public Advertisement(String id, String ownerName, String title, String address, String districtID
+            , String districtName, String provinceID, String provinceName, String phone, String description
+            , String area, String price, String type, String latitude, String longtitude, String image1
+            , String image2, String image3, Date dateCreate, Date dateUpdate) {
+        this.id = id;
+        this.ownerName = ownerName;
+        this.title = title;
+        this.address = address;
+        this.districtID = districtID;
+        this.districtName = districtName;
+        this.provinceID = provinceID;
+        this.provinceName = provinceName;
+        this.phone = phone;
+        this.description = description;
+        this.area = area;
+        this.price = price;
+        this.type = type;
+        this.latitude = latitude;
+        this.longtitude = longtitude;
+        this.image1 = image1;
+        this.image2 = image2;
+        this.image3 = image3;
+        this.dateCreate = dateCreate;
+        this.dateUpdate = dateUpdate;
+    }
 
     /**
      * This constructor is use for load post info with detail flag is ON. NO LATITUDE, LANGTITUDE
