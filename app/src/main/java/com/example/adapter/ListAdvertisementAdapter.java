@@ -77,10 +77,11 @@ public class ListAdvertisementAdapter extends BaseAdapter {
         Advertisement ad = advertisementItems.get(position);
 
         // thumbnail image
-        // test link online, using volley
+        thumbNail.setImageUrl(null, imageLoader);
+        thumbNail.setDefaultImageResId(R.drawable.home_icon);
         if (!ad.getImage1().equalsIgnoreCase("null"))
             thumbNail.setImageUrl("http://" + ConfigConstants.IP_ADDRESS + ":" + ConfigConstants.PORT + ad.getImage1(), imageLoader);
-        else thumbNail.setImageUrl(ConfigConstants.DEFAULT_IMAGE_URL, imageLoader);
+        //else thumbNail.setImageUrl(ConfigConstants.DEFAULT_IMAGE_URL, imageLoader);
 
 
         // title
@@ -90,12 +91,12 @@ public class ListAdvertisementAdapter extends BaseAdapter {
         address.setText(formatAddress(ad));
 
         // area
+        if(!ad.getArea().equalsIgnoreCase("null"))
         area.setText("Area: " + ad.getArea() + " m2");
+        else area.setText("Area: N/A");
 
         // price
-        if (!ad.getPrice().equalsIgnoreCase("null")) {
-            price.setText(formatPrice(ad.getPrice()));
-        } else price.setText("CONTACT FOR PRICE");
+        price.setText(formatPrice(ad.getPrice()));
 
 
         // ID
@@ -110,18 +111,22 @@ public class ListAdvertisementAdapter extends BaseAdapter {
 
     //Format price as "$X,000,000"
     public static String formatPrice(String price) {
-        StringBuilder strBuilder = new StringBuilder(price);
 
-        int index = strBuilder.length() - 1;
-        while (index > 1) {
-            index -= 2;
-            if (index > 0) {
-                strBuilder.insert(index, ',');
-                index--;
+        if (!price.equalsIgnoreCase("null")) {
+            StringBuilder strBuilder = new StringBuilder(price);
+
+            int index = strBuilder.length() - 1;
+            while (index > 1) {
+                index -= 2;
+                if (index > 0) {
+                    strBuilder.insert(index, ',');
+                    index--;
+                }
             }
+            return "$" + strBuilder.toString();
         }
+        else return "CONTACT FOR PRICE";
 
-        return "$"+strBuilder.toString();
     }
 
     public static String formatDate(Date date) {

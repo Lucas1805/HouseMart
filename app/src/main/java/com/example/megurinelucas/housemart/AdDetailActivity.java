@@ -45,6 +45,11 @@ public class AdDetailActivity extends AppCompatActivity {
     TextView address;
     TextView price;
     TextView last_update;
+    TextView description;
+    TextView owner;
+    TextView phone;
+    TextView area;
+    TextView date_created;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +77,7 @@ public class AdDetailActivity extends AppCompatActivity {
             }
 
             if (imgUrls.size() == 0) {
-                imgUrls.add(ConfigConstants.DEFAULT_IMAGE_URL);
+                //imgUrls.add(ConfigConstants.DEFAULT_IMAGE_URL);
             }
 
             ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
@@ -89,6 +94,16 @@ public class AdDetailActivity extends AppCompatActivity {
             price.setText(ListAdvertisementAdapter.formatPrice(ad.getPrice()));
             last_update=(TextView) findViewById(R.id.adLastUpdate);
             last_update.setText("Last Updated: "+ListAdvertisementAdapter.formatDate(ad.getDateUpdate()));
+            description=(TextView) findViewById(R.id.adDes);
+            description.setText(ad.getDescription());
+            owner=(TextView) findViewById(R.id.adOwner);
+            owner.setText(ad.getOwnerName());
+            phone=(TextView) findViewById(R.id.adPhone);
+            phone.setText(ad.getPhone());
+            area=(TextView) findViewById(R.id.adArea);
+            area.setText(ad.getArea());
+            date_created=(TextView) findViewById(R.id.adDateCreated);
+            date_created.setText(ListAdvertisementAdapter.formatDate(ad.getDateCreate()));
 
         } else {
             Toast.makeText(this, "No internet connection, " +

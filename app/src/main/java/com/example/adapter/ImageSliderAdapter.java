@@ -24,7 +24,7 @@ import java.util.List;
 /**
  * Created by LENOVO on 04/17/2016.
  */
-public class ImageSliderAdapter extends PagerAdapter  {
+public class ImageSliderAdapter extends PagerAdapter {
 
     ImageLoader imageLoader = AppController.getInstance().getImageLoader();
 
@@ -35,6 +35,9 @@ public class ImageSliderAdapter extends PagerAdapter  {
     public ImageSliderAdapter(Activity activity, List<String> imagePaths) {
         _activity = activity;
         _imagePaths = imagePaths;
+        if(_imagePaths.size()==0){
+            _imagePaths.add(null);
+        }
     }
 
     @Override
@@ -54,8 +57,8 @@ public class ImageSliderAdapter extends PagerAdapter  {
         View viewLayout = inflater.inflate(R.layout.image_in_slider, container, false);
 
         NetworkImageView imgDisplay = (NetworkImageView) viewLayout.findViewById(R.id.imgDisplay);
+        imgDisplay.setDefaultImageResId(R.drawable.home_icon);
         imgDisplay.setImageUrl(_imagePaths.get(position), imageLoader);
-
         ((ViewPager) container).addView(viewLayout);
         return viewLayout;
     }

@@ -26,7 +26,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_expand_more_black_24dp"
-            android:onClick="expandSearch"/>
+            android:onClick="expandSearch"
+            android:tint="@color/colorPrimaryDark"/>
     </LinearLayout>
 
     <LinearLayout
