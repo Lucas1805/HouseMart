@@ -270,6 +270,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
+
     /**
      * Ham nay duoc goi khi bam nut expand
      * @param v
